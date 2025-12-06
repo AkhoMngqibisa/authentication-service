@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -20,7 +20,9 @@ public class User {
 
     private boolean enabled;
 
+    @Column(name = "failed_attempts")
     private int failedAttempts;
 
+    @Column(name = "account_locked")
     private boolean accountLocked;
 }
