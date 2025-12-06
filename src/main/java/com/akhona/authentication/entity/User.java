@@ -1,7 +1,10 @@
 package com.akhona.authentication.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
