@@ -30,9 +30,15 @@ public class AuthService {
 
         userRepository.save(user);
 
-        String token = jwtService.generateToken(user.getEmail());
+        String accessToken = jwtService.generateToken(user.getEmail());
 
-        return new AuthResponse(token);
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .tokenType("Bearer")
+                .expiresIn(86400000)
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .build();
     }
 
 }
