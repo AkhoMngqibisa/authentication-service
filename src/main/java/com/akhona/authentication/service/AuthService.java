@@ -20,7 +20,7 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
-    private AuthResponse register(RegisterRequest registerRequest) {
+    public AuthResponse register(RegisterRequest registerRequest) {
         User user = new User();
 
         user.setEmail(registerRequest.getEmail());
