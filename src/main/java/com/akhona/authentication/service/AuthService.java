@@ -1,7 +1,6 @@
 package com.akhona.authentication.service;
 
-import com.akhona.authentication.dto.AuthResponse;
-import com.akhona.authentication.dto.RegisterRequest;
+import com.akhona.authentication.dto.*;
 import com.akhona.authentication.entity.*;
 import com.akhona.authentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,26 @@ public class AuthService {
         user.setEnabled(true);
 
         userRepository.save(user);
+
+        String accessToken = jwtService.generateToken(user.getEmail());
+
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .tokenType("Bearer")
+                .expiresIn(86400000)
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .build();
+    }
+
+    public AuthResponse login(LoginRequest loginRequest) {
+        User user = userRepository
+                .findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Wrong password");
+        }
 
         String accessToken = jwtService.generateToken(user.getEmail());
 
