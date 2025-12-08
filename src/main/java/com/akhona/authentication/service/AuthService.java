@@ -1,6 +1,8 @@
 package com.akhona.authentication.service;
 
-import com.akhona.authentication.dto.*;
+import com.akhona.authentication.dto.request.LoginRequest;
+import com.akhona.authentication.dto.request.RegisterRequest;
+import com.akhona.authentication.dto.response.AuthResponse;
 import com.akhona.authentication.entity.*;
 import com.akhona.authentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

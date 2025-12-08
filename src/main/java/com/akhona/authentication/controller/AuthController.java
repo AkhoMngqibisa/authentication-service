@@ -1,6 +1,8 @@
 package com.akhona.authentication.controller;
 
-import com.akhona.authentication.dto.*;
+import com.akhona.authentication.dto.request.LoginRequest;
+import com.akhona.authentication.dto.request.RegisterRequest;
+import com.akhona.authentication.dto.response.AuthResponse;
 import com.akhona.authentication.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.bind.annotation.*;

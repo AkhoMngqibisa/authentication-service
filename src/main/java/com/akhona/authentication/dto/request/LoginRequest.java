@@ -1,4 +1,4 @@
-package com.akhona.authentication.dto;
+package com.akhona.authentication.dto.request;
 
 import lombok.*;
 
