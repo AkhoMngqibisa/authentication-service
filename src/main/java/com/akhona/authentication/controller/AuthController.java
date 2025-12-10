@@ -3,6 +3,7 @@ package com.akhona.authentication.controller;
 import com.akhona.authentication.dto.request.*;
 import com.akhona.authentication.dto.response.*;
 import com.akhona.authentication.entity.*;
+import com.akhona.authentication.security.CustomUserDetails;
 import com.akhona.authentication.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +29,11 @@ public class AuthController {
 
     @GetMapping("/user")
     public ResponseEntity<UserProfileResponse> user (Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         UserProfileResponse response = UserProfileResponse.builder()
-                .userId(user.getId())
-                .email(user.getEmail())
-                .role(user.getRole().name())
+                .userId(customUserDetails.getId())
+                .email(customUserDetails.getUsername())
+                .role(customUserDetails.getRole().name())
                 .build();
 
         return ResponseEntity.ok(response);
