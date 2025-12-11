@@ -5,17 +5,13 @@ import lombok.*;
 
 import java.time.Instant;
 
-@Entity
-@Table(name = "login_audit",
-       indexes = {
-                @Index(name = "idx_email", columnList = "email"),
-                @Index(name = "idx_timestamp", columnList = "timestamp")
-        })
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "audit")
 public class Audit {
 
     @Id
@@ -27,5 +23,5 @@ public class Audit {
     private String ipAddress;
     private String userAgent;
     private String failureReason;
-    private Instant timestamp;
+    private Instant createdAt;
 }

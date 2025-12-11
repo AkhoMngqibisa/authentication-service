@@ -28,7 +28,7 @@ public class AuditService {
                 .ipAddress(ip)
                 .userAgent(userAgent)
                 .failureReason(reason)
-                .timestamp(Instant.now())
+                .createdAt(Instant.now())
                 .build();
 
         auditRepository.save(audit);
