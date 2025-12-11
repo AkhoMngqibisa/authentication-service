@@ -5,6 +5,8 @@ import com.akhona.authentication.dto.request.RegisterRequest;
 import com.akhona.authentication.dto.response.AuthResponse;
 import com.akhona.authentication.entity.*;
 import com.akhona.authentication.repository.UserRepository;
+import com.akhona.authentication.util.RequestUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class AuthService {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private AuditService auditService;
 
     public AuthResponse register(RegisterRequest registerRequest) {
         User user = new User();
@@ -42,16 +47,24 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponse login(LoginRequest loginRequest) {
+    public AuthResponse login(LoginRequest loginRequest, HttpServletRequest httpRequest) {
+        String ip = RequestUtil.getClientIpAddress(httpRequest);
+        String agent = RequestUtil.getUserAgent(httpRequest);
         User user = userRepository
                 .findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> {
+                    auditService.logFailure(loginRequest.getEmail(), ip, agent,"User not found");
+                    return new RuntimeException("User not found");
+                });
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            auditService.logFailure(user.getEmail(), ip, agent, "Invalid password");
             throw new RuntimeException("Wrong password");
         }
 
         String accessToken = jwtService.generateToken(user.getEmail());
+
+        auditService.logSuccess(user.getEmail(), ip, agent);
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
