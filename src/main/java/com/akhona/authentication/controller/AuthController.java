@@ -5,6 +5,7 @@ import com.akhona.authentication.dto.response.*;
 import com.akhona.authentication.entity.*;
 import com.akhona.authentication.security.CustomUserDetails;
 import com.akhona.authentication.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,8 +24,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest);
+    public AuthResponse login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpRequest) {
+        return authService.login(loginRequest,httpRequest);
     }
 
     @GetMapping("/user")
