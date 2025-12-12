@@ -26,6 +26,8 @@ public class AuthService {
     @Autowired
     private AuditService auditService;
 
+    private AccountSecurityService accountSecurityService;
+
     public AuthResponse register(RegisterRequest registerRequest) {
         User user = new User();
 
@@ -56,6 +58,8 @@ public class AuthService {
                     auditService.logFailure(loginRequest.getEmail(), ip, agent,"User not found");
                     return new RuntimeException("User not found");
                 });
+
+        accountSecurityService.checkLockStatus(user);
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             auditService.logFailure(user.getEmail(), ip, agent, "Invalid password");
