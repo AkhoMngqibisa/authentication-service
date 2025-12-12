@@ -3,6 +3,8 @@ package com.akhona.authentication.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Entity
@@ -28,4 +30,6 @@ public class User {
 
     @Column(name = "account_locked")
     private boolean accountLocked;
+
+    private Instant lockTime;
 }
