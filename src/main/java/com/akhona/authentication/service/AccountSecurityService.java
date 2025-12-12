@@ -29,4 +29,11 @@ public class AccountSecurityService {
 
         userRepository.save(user);
     }
+
+    public void resetAttempts(User user) {
+        user.setFailedAttempts(0);
+        user.setAccountLocked(false);
+        user.setLockTime(null);
+        userRepository.save(user);
+    }
 }
