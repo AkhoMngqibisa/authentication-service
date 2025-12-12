@@ -36,4 +36,18 @@ public class AccountSecurityService {
         user.setLockTime(null);
         userRepository.save(user);
     }
+
+    public void checkLockStatus(User user) {
+
+        if (!user.isAccountLocked()) return;
+
+        if (user.getLockTime()
+                .plus(LOCK_DURATION)
+                .isBefore(Instant.now())) {
+
+            resetAttempts(user);
+        } else {
+            throw new RuntimeException("Account is locked. Try again later.");
+        }
+    }
 }
