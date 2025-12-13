@@ -26,6 +26,7 @@ public class AuthService {
     @Autowired
     private AuditService auditService;
 
+    @Autowired
     private AccountSecurityService accountSecurityService;
 
     public AuthResponse register(RegisterRequest registerRequest) {
@@ -72,6 +73,7 @@ public class AuthService {
         auditService.logSuccess(user.getEmail(), ip, agent);
 
         return AuthResponse.builder()
+                .userId(user.getId())
                 .accessToken(accessToken)
                 .tokenType("Bearer")
                 .expiresIn(86400000)
