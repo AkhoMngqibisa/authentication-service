@@ -64,11 +64,11 @@ public class AuthService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             accountSecurityService.recordFailedAttempt(user);
             auditService.logFailure(user.getEmail(), ip, agent, "Invalid password");
-            throw new RuntimeException("Wrong password");
+            throw new RuntimeException("Invalid credentials");
         }
 
         String accessToken = jwtService.generateToken(user.getEmail());
-
+        accountSecurityService.resetAttempts(user);
         auditService.logSuccess(user.getEmail(), ip, agent);
 
         return AuthResponse.builder()
