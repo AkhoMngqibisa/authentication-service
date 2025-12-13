@@ -62,6 +62,7 @@ public class AuthService {
         accountSecurityService.checkLockStatus(user);
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            accountSecurityService.recordFailedAttempt(user);
             auditService.logFailure(user.getEmail(), ip, agent, "Invalid password");
             throw new RuntimeException("Wrong password");
         }
