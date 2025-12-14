@@ -23,6 +23,11 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Operation(summary = "User register")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Registration Successful"),
+            @ApiResponse(responseCode = "401", description = "Unable to register")
+    })
     @PostMapping("/register")
     public AuthResponse register(@RequestBody RegisterRequest registerRequest) {
         return authService.register(registerRequest);
