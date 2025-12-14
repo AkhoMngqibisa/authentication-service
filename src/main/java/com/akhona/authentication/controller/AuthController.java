@@ -28,6 +28,11 @@ public class AuthController {
         return authService.register(registerRequest);
     }
 
+    @Operation(summary = "User login")
+    @ApiResponses(value = {
+           @ApiResponse(responseCode = "200", description = "Login Successful"),
+           @ApiResponse(responseCode = "401", description = "Invalid Credentials")
+    })
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpRequest) {
         return authService.login(loginRequest,httpRequest);
